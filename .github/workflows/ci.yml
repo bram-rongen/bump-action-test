@@ -23,6 +23,15 @@ jobs:
       newTag: ${{ steps.version-bump.outputs.newTag }}
 
     steps:
+      - name: Sets env vars for main
+        run: echo "DEFAULT_BUMP_TYPE=prerelease" >> $GITHUB_ENV
+        if: github.ref === 'refs/tags/main'
+
+      - name: Sets env vars for production
+        run: |
+          echo "DEFAULT_BUMP_TYPE=patch" >> $GITHUB_ENV
+        if: github.ref === 'refs/tags/production'
+
       - name: "Checkout source code"
         uses: "actions/checkout@v2"
         with:
@@ -34,6 +43,7 @@ jobs:
         uses: "phips28/gh-action-bump-version@master"
         with:
           tag-prefix: "v"
+          default: $DEFAULT_BUMP_TYPE
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: "cat package.json"
