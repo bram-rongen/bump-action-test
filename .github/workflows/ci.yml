@@ -43,7 +43,7 @@ jobs:
         uses: "phips28/gh-action-bump-version@master"
         with:
           tag-prefix: "v"
-          default: $DEFAULT_BUMP_TYPE
+          default: ${{ env.DEFAULT_BUMP_TYPE }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: "cat package.json"
